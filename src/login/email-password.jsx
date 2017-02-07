@@ -45,7 +45,7 @@ export const EmailPasswordLoginForm = ({dispatch, disabled, formData}) => {
           data-automation-id='test'
           disabled={ disabled }
           buttonType={ ButtonType.primary }
-          onClick={() => {  }}
+          onClick={dispatchAction}
         >
           Create account
         </Button>
