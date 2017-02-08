@@ -42,13 +42,14 @@ storiesOf('UserPasswordLoginForm', module)
       console.log(val);
       action(val.type)
     };
-    const disabled = false;
+    const disabled = true;
     const formData = {
       email: "bdobbs",
       password: "slackulous"
     }
     const errors = {
-      'password': 'wrong password'
+      'password': 'wrong password',
+      'email':'invalid email format'
     }
     return (
       <EmailPasswordLoginForm 
