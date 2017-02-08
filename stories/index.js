@@ -18,18 +18,39 @@ storiesOf('Button', module)
   ));
 
 storiesOf('UserPasswordLoginForm', module)
-  .add('basic form', () => {
+  .add('basic login', () => {
     const dispatch = () => {};
     const disabled = false;
     const formData = {
       email: "bdobbs@example.com",
       password: "slackulous"
     }
+    const notices = [];
     return (
       <EmailPasswordLoginForm 
         dispatch={dispatch}
         disabled={disabled}
         formData={formData}
+      />
+    );
+  })
+  .add('error state', () => {
+    const dispatch = () => {};
+    const disabled = false;
+    const formData = {
+      email: "bdobbs",
+      password: "slackulous"
+    }
+    const errors = {
+      'password': 'wrong password',
+      'email': 'invalid email'
+    }
+    return (
+      <EmailPasswordLoginForm 
+        dispatch={dispatch}
+        disabled={disabled}
+        formData={formData}
+        errors={errors}
       />
     );
   });
