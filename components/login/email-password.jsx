@@ -3,7 +3,9 @@ import {
   TextField,
   Button,
   ButtonType,
-  Label
+  Label,
+  Spinner,
+  SpinnerType
 } from 'office-ui-fabric-react';
 
 export const actions = {
@@ -57,7 +59,7 @@ function addEmailValidation(formData, errors) {
 
 */
 export const EmailPasswordLoginForm = (props) => {
-  const {dispatch, disabled, formData, notices} = props
+  const {dispatch, disabled, formData, pending=false} = props
   const errors = props.errors || {}; //default
   const loginAction = {
     type: actions.login,
@@ -103,37 +105,42 @@ export const EmailPasswordLoginForm = (props) => {
   return (
     <div>
       <form>
-        <TextField 
-          label='Email'
-          value={formData.email}
-          name="email"
-          required
-          placeholder='bdobbs@example.com'
-          ariaLabel='Please enter text here'
-          onGetErrorMessage={handleErrors('email', errors)}
-          onChanged={registerChange('email')}
-          onNotifyValidationResult={registerValidator('email')}
-        />
-        <TextField 
-          label='Password'
-          value={formData.password}
-          type="password"
-          name="value"
-          required
-          placeholder='Place your password here'
-          ariaLabel='Password'
-          onGetErrorMessage={handleErrors('password', errors)}
-          onChanged={registerChange('password')}
-          onNotifyValidationResult={registerValidator('password')}
-        />
-        <Button
-          data-automation-id='test'
-          disabled={ disabled }
-          buttonType={ ButtonType.primary }
-          onClick={dispatchAction}
-        >
-          Create account
-        </Button>
+          <div>
+            <TextField 
+              label='Email'
+              value={formData.email}
+              name="email"
+              required
+              disabled={pending}
+              placeholder='bdobbs@example.com'
+              ariaLabel='Please enter text here'
+              onGetErrorMessage={handleErrors('email', errors)}
+              onChanged={registerChange('email')}
+              onNotifyValidationResult={registerValidator('email')}
+            />
+            <TextField 
+              label='Password'
+              value={formData.password}
+              type="password"
+              name="value"
+              required
+              disabled={pending}
+              placeholder='Place your password here'
+              ariaLabel='Password'
+              onGetErrorMessage={handleErrors('password', errors)}
+              onChanged={registerChange('password')}
+              onNotifyValidationResult={registerValidator('password')}
+            />
+            <Button
+              data-automation-id='test'
+              disabled={ disabled }
+              buttonType={ ButtonType.primary }
+              onClick={dispatchAction}
+            >
+              <i className="ms-Icon ms-Icon--Mail" aria-hidden="true"></i>
+              {(!pending) ? 'Create Account' : 'Signing In' }
+            </Button>
+          </div>
       </form>
     </div>
   )

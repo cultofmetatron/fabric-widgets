@@ -31,9 +31,10 @@ storiesOf('UserPasswordLoginForm', module)
     const notices = [];
     return (
       <EmailPasswordLoginForm 
-        dispatch={dispatch}
+        dispatch={action('login-pass')}
         disabled={disabled}
         formData={formData}
+        pending={false}
       />
     );
   })
@@ -57,7 +58,32 @@ storiesOf('UserPasswordLoginForm', module)
         disabled={disabled}
         formData={formData}
         errors={errors}
+        pending={false}
       />
     );
-  });
+  })
+  .add('pending', () => {
+    const dispatch = (val) => {
+      console.log(val);
+      action(val.type)
+    };
+    const disabled = true;
+    const formData = {
+      email: "bdobbs",
+      password: "slackulous"
+    }
+    const errors = {
+      'password': 'wrong password',
+      'email':'invalid email format'
+    }
+    return (
+      <EmailPasswordLoginForm 
+        dispatch={action('login-pass')}
+        disabled={disabled}
+        formData={formData}
+        errors={errors}
+        pending={true}
+      />
+    );
+  })
 
