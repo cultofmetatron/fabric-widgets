@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook';
 import Button from './Button';
 import Welcome from './Welcome';
-import { EmailPasswordLoginForm } from '../src/login/email-password';
+import { EmailPasswordLoginForm } from '../components/login/email-password';
 
 storiesOf('Welcome', module)
   .add('to Storybook', () => (
@@ -42,8 +42,7 @@ storiesOf('UserPasswordLoginForm', module)
       password: "slackulous"
     }
     const errors = {
-      'password': 'wrong password',
-      'email': 'invalid email'
+      'password': 'wrong password'
     }
     return (
       <EmailPasswordLoginForm 

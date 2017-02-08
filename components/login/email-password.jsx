@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  autobind,
   TextField,
   Button,
   ButtonType,
@@ -8,7 +7,8 @@ import {
 } from 'office-ui-fabric-react';
 
 export const actions = {
-  login: 'loginform:emailpass:login'
+  login: 'loginform:emailpass:login',
+  change: 'loginform:emailpass:change'
 };
 
 function handleErrors(field, errors) {
@@ -21,12 +21,15 @@ function handleErrors(field, errors) {
   have at least one '.' on the left side
 */
 function validEmail(email) {
-  const split1 = email.split('@');
+  if (email.length == 0) {
+    return true;
+  }
+  const split = email.split('@');
   if (split.length != 2) {
     return false
   } else {
     //must have at least one . on the right half
-    if (split[1].split('.') > 1) {
+    if (split[1].split('.').length > 1) {
       return true;
     } else {
       return false;
@@ -35,7 +38,8 @@ function validEmail(email) {
 }
 
 function addEmailValidation(formData, errors) {
-  if (validEmail(formData.email)) {
+  const email = formData.email || '';
+  if (validEmail(email)) {
     return errors
   } else {
     errors.email = "Invalid email";
@@ -53,8 +57,8 @@ function addEmailValidation(formData, errors) {
 */
 export const EmailPasswordLoginForm = (props) => {
   const {dispatch, disabled, formData, notices} = props
-  const errors = props.errors || {}; //default
-  const action = {
+  const errors = addEmailValidation(formData, props.errors || {}); //default
+  const loginAction = {
     type: actions.login,
     data: {
       email: formData.email,
@@ -64,10 +68,22 @@ export const EmailPasswordLoginForm = (props) => {
   const dispatchAction = (e) => {
     e.preventDefault();
     if (!disabled) {
-      dispatch(action);
+      dispatch(loginAction);
     }
   };
-  
+  //dispatches a change action
+  const onChange = (field, value) => {
+    dispatch({
+      type: actions.change,
+      data: {
+        field: field,
+        prevValue: formData[field],
+        newValue: value
+      }
+    })
+  }
+  const registerChange = (field) =>
+    (value) => onChange(field, value)
 
   return (
     <div>
@@ -76,18 +92,23 @@ export const EmailPasswordLoginForm = (props) => {
           label='Email'
           value={formData.email}
           name="email"
+          required
           placeholder='bdobbs@example.com'
           ariaLabel='Please enter text here'
           onGetErrorMessage={handleErrors('email', errors)}
+          onChanged={registerChange('email')}
+          underlined
         />
         <TextField 
           label='Password'
           value={formData.password}
           type="password"
           name="value"
+          required
           placeholder='Place your password here'
           ariaLabel='Password'
           onGetErrorMessage={handleErrors('password', errors)}
+          underlined
         />
         <Button
           data-automation-id='test'
