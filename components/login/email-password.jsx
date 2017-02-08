@@ -37,6 +37,7 @@ function validEmail(email) {
   }
 }
 
+//TODO: move this to somewhere else #allValidatorsMatter
 function addEmailValidation(formData, errors) {
   const email = formData.email || '';
   if (validEmail(email)) {
@@ -57,7 +58,7 @@ function addEmailValidation(formData, errors) {
 */
 export const EmailPasswordLoginForm = (props) => {
   const {dispatch, disabled, formData, notices} = props
-  const errors = addEmailValidation(formData, props.errors || {}); //default
+  const errors = props.errors || {}; //default
   const loginAction = {
     type: actions.login,
     data: {
@@ -73,6 +74,7 @@ export const EmailPasswordLoginForm = (props) => {
   };
   //dispatches a change action
   const onChange = (field, value) => {
+    debugger
     dispatch({
       type: actions.change,
       data: {
@@ -84,6 +86,19 @@ export const EmailPasswordLoginForm = (props) => {
   }
   const registerChange = (field) =>
     (value) => onChange(field, value)
+
+  const onValidation = (field, error, value) => {
+    dispatch({
+      type: actions.change,
+      data: {
+        field: field,
+        prevValue: formData[field],
+        newValue: value
+      }
+    })
+  }
+  const registerValidator = (field) =>
+    (error, value) => onValidation(field, error, value)
 
   return (
     <div>
@@ -97,7 +112,7 @@ export const EmailPasswordLoginForm = (props) => {
           ariaLabel='Please enter text here'
           onGetErrorMessage={handleErrors('email', errors)}
           onChanged={registerChange('email')}
-          underlined
+          onNotifyValidationResult={registerValidator('email')}
         />
         <TextField 
           label='Password'
@@ -108,7 +123,8 @@ export const EmailPasswordLoginForm = (props) => {
           placeholder='Place your password here'
           ariaLabel='Password'
           onGetErrorMessage={handleErrors('password', errors)}
-          underlined
+          onChanged={registerChange('password')}
+          onNotifyValidationResult={registerValidator('password')}
         />
         <Button
           data-automation-id='test'

@@ -19,7 +19,10 @@ storiesOf('Button', module)
 
 storiesOf('UserPasswordLoginForm', module)
   .add('basic login', () => {
-    const dispatch = () => {};
+    const dispatch = (val) => {
+      console.log(val);
+      action(val.type)
+    };
     const disabled = false;
     const formData = {
       email: "bdobbs@example.com",
@@ -35,7 +38,10 @@ storiesOf('UserPasswordLoginForm', module)
     );
   })
   .add('error state', () => {
-    const dispatch = () => {};
+    const dispatch = (val) => {
+      console.log(val);
+      action(val.type)
+    };
     const disabled = false;
     const formData = {
       email: "bdobbs",
@@ -46,7 +52,7 @@ storiesOf('UserPasswordLoginForm', module)
     }
     return (
       <EmailPasswordLoginForm 
-        dispatch={dispatch}
+        dispatch={action('login-pass')}
         disabled={disabled}
         formData={formData}
         errors={errors}
